@@ -62,16 +62,16 @@ def isqrt_dichotomy2(y):
 
 
 def isqrt_wiki_bin_dgd(x):
-    d = 2 ** x.bit_length()
-    c = 0
-    while d != 0:
-        if x >= c + d:
-            x -= c + d
-            c = (c >> 1) + d
-        else:
-            c >>= 1
-        d >>= 2
-    return c
+    # wikipedia.org/wiki/Integer_square_root#Using_bitwise_operations
+    shift = (x.bit_length() + 1) // 2 * 2
+    result = 0
+    while shift >= 0:
+        result = result << 1
+        large_cand = result + 1
+        if large_cand * large_cand <= x >> shift:
+            result = large_cand
+        shift -= 2
+    return result
 
 
 isqrts = {
