@@ -1,4 +1,4 @@
-from math import floor
+from math import isqrt as pyisqrt
 from itertools import count
 
 
@@ -14,11 +14,11 @@ def isqrt_digit_by_digit(y):
 
 def isqrt_dichotomy(x):
     x0, x2 = 0, 1
-    while x2 ** 2 < x:
+    while x2**2 < x:
         x0, x2 = x2, x2 * 2
     while x0 != x2:
         x1 = (x0 + x2 + 1) // 2
-        if x1 ** 2 > x:
+        if x1**2 > x:
             x2 = x1 - 1
         else:
             x0 = x1
@@ -75,6 +75,7 @@ def isqrt_wiki_bin_dgd(x):
 
 
 isqrts = {
+    "math.isqrt": pyisqrt,
     "simple digit-by-digit calculation": isqrt_digit_by_digit,
     "find square root by dichotomy": isqrt_dichotomy,
     "linear descending search": isqrt_linear,
