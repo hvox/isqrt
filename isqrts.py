@@ -1,4 +1,4 @@
-from math import isqrt as pyisqrt
+from math import isqrt as cpy38_isqrt
 from itertools import count
 
 
@@ -74,8 +74,23 @@ def isqrt_wiki_bin_dgd(x):
     return result
 
 
+def py38_isqrt(n):
+    # https://github.com/python/cpython/blob/main/Modules/mathmodule.c#L1593
+    if n == 0:
+        return 0
+    c = (n.bit_length() - 1) // 2
+    a, d = 1, 0
+    for s in reversed(range(c.bit_length())):
+        # Loop invariant: (a-1)**2 < (n >> 2*(c - d)) < (a+1)**2
+        e = d
+        d = c >> s
+        a = (a << d - e - 1) + (n >> 2*c - e - d + 1) // a
+    return a - (a*a > n)
+
+
 isqrts = {
-    "math.isqrt": pyisqrt,
+    "math.isqrt in C": cpy38_isqrt,
+    "math.isqrt in Python": py38_isqrt,
     "simple digit-by-digit calculation": isqrt_digit_by_digit,
     "find square root by dichotomy": isqrt_dichotomy,
     "linear descending search": isqrt_linear,
